@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
 });
 export default class Playground extends Component {
 
-	cellStyle(i, j, centerCell) {
-		const borderTopWidth = (i === centerCell ? 1 : null);
-		const borderBottomWidth = (i === centerCell ? 1 : null);
-		const borderLeftWidth = (j === centerCell ? 1 : null);
-		const borderRightWidth = (j === centerCell ? 1 : null);
+	cellStyle(i, j, boardLength) {
+		const borderTopWidth = (i === 0 ? null : 1);
+		const borderBottomWidth = (i === boardLength ? null : 1);
+		const borderLeftWidth = (j === 0 ? null : 1);
+		const borderRightWidth = (j === boardLength ? null : 1);
 		return {
 			borderBottomWidth,
 			borderTopWidth,
@@ -72,7 +72,7 @@ export default class Playground extends Component {
 		if (!board || !onSelect) {
 			return null;
 		}
-		const centerCell = Math.trunc(board.length / 2);
+		const boardLength = board.length - 1;
 		return (
 			<View style={styles.MainContainer}>
 			{this.props.board.map((i, indexI) => (
@@ -85,10 +85,10 @@ export default class Playground extends Component {
 							key={`cell_${indexI}_${indexJ}_$(j)`}
 							style={[
 								styles.Cell,
-								this.cellStyle(indexI, indexJ, centerCell),
+								this.cellStyle(indexI, indexJ, boardLength),
 							]}
 							onPress={() => { this.props.onSelect({ x: indexI, y: indexJ }, j)}}
-						>
+							>
 							<Svg
 								height="100"
 								width="100"

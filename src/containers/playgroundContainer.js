@@ -3,6 +3,31 @@ import React, { Component } from 'react';
 import Playground from '../components/playground';
 
 export default class PlaygroundContainer extends Component {
+
+	static isWinner(board, player) {
+		const rowScore = [0, 0, 0];
+		const columnScore = [0, 0, 0];
+		const diagScore = [0, 0];
+		const boardLength = board.length;
+		for (let i = 0; i < board.length; i += 1) {
+			for (let j = 0; j < board.length; j += 1) {
+				if (board[i][j] === player) {
+					columnScore[i] += 1;
+					rowScore[j] += 1;
+					if (i === j) {
+						diagScore[0] += 1;
+						if (i === Math.trunc(board.length / 2)) {
+							diagScore[1] += 1;
+						}
+					} else if ((i + j) === (board.length - 1)) {
+						diagScore[1] += 1;
+					}
+				}
+			}
+		}
+		return columnScore.includes(boardLength) || rowScore.includes(boardLength) || diagScore.includes(boardLength);
+	}
+
 	constructor(props) {
 		super(props);
 		this.createBoard = this.createBoard.bind(this);
@@ -17,33 +42,6 @@ export default class PlaygroundContainer extends Component {
 		this.createBoard(3);
 	}
 
-
-	isWinner(board, player) {
-		let result = false;
-		let rowScore = [0, 0, 0];
-		let columnScore = [0, 0, 0];
-		let diagScore = [0, 0];
-		for (let i = 0; i < board.length; i++) {
-			for (let j = 0; j < board.length; j++) {
-				if (board[i][j] === player) {
-					columnScore[i]++;
-					rowScore[j]++;
-					if (i === j) {
-						if (i < board.length / 2) {
-							diagScore[0]++;
-						} else if (i > board.length / 2) {
-							diagScore[1]++;
-						} else {
-							diagScore[0]++;
-							diagScore[1]++;
-						}
-					}
-				}
-			}
-		}
-		return columnScore.includes(3) || rowScore.includes(3) || diagScore.includes(3);
-	}
-
 	onSelect(coords, type, test) {
 		const updatedBoard = test || this.state.board.map(inner => inner.slice());
 
@@ -51,7 +49,7 @@ export default class PlaygroundContainer extends Component {
 		updatedBoard[coords.x][coords.y] = newPlayer;
 
 		this.setState({ board: updatedBoard, player: newPlayer });
-		if (this.isWinner(updatedBoard, newPlayer)) {
+		if (PlaygroundContainer.isWinner(updatedBoard, newPlayer)) {
 			alert('yay');
 		}
 	}
@@ -67,7 +65,6 @@ export default class PlaygroundContainer extends Component {
 
 		this.setState({ board: boardContructor });
 	}
-
 
 	render() {
 		return (<Playground board={this.state.board} onSelect={this.onSelect} />);
