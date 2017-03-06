@@ -34,7 +34,7 @@ export default class PlaygroundContainer extends Component {
 		this.onSelect = this.onSelect.bind(this);
 		this.state = {
 			board: [],
-			player: 0,
+			player: this.props.active.id,
 		};
 	}
 
@@ -50,8 +50,10 @@ export default class PlaygroundContainer extends Component {
 
 		this.setState({ board: updatedBoard, player: newPlayer });
 		if (PlaygroundContainer.isWinner(updatedBoard, newPlayer)) {
-			alert('yay');
+			alert('Congratulations ' + this.props.active.name );
 		}
+
+		this.props.onMove();
 	}
 
 	createBoard(n) {
@@ -70,3 +72,10 @@ export default class PlaygroundContainer extends Component {
 		return (<Playground board={this.state.board} onSelect={this.onSelect} />);
 	}
 }
+PlaygroundContainer.propTypes = {
+	active: React.PropTypes.shape({
+			name: React.PropTypes.string,
+			isActive: React.PropTypes.bool,
+	}),
+	onMove: React.PropTypes.func.isRequired,
+};
