@@ -3,7 +3,6 @@ import {
 	View,
 	StyleSheet,
 	TouchableOpacity,
-	Text,
 } from 'react-native';
 import Svg, {
 		Circle,
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
 });
 export default class Playground extends Component {
 
-	cellStyle(i, j, boardLength) {
+	static cellStyle(i, j, boardLength) {
 		const borderTopWidth = (i === 0 ? null : 1);
 		const borderBottomWidth = (i === boardLength ? null : 1);
 		const borderLeftWidth = (j === 0 ? null : 1);
@@ -40,7 +39,7 @@ export default class Playground extends Component {
 			borderRightWidth,
 		};
 	}
-	boardFigure(type) {
+	static boardFigure(type) {
 		if (type === 1) {
 			return (
 					<Circle
@@ -67,6 +66,7 @@ export default class Playground extends Component {
 		}
 		return null;
 	}
+
 	render() {
 		const { board, onSelect } = this.props;
 		if (!board || !onSelect) {
@@ -85,15 +85,15 @@ export default class Playground extends Component {
 							key={`cell_${indexI}_${indexJ}_$(j)`}
 							style={[
 								styles.Cell,
-								this.cellStyle(indexI, indexJ, boardLength),
+								Playground.cellStyle(indexI, indexJ, boardLength),
 							]}
-							onPress={() => { this.props.onSelect({ x: indexI, y: indexJ }, j)}}
-							>
+							onPress={() => { this.props.onSelect({ x: indexI, y: indexJ }, j); }}
+						>
 							<Svg
 								height="100"
 								width="100"
 							>
-							{this.boardFigure(j)}
+							{Playground.boardFigure(j)}
 							</Svg>
 						</TouchableOpacity>
 					))}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Playground from '../components/playground';
+import Playground from './playground';
 
 export default class PlaygroundContainer extends Component {
 
@@ -34,7 +34,6 @@ export default class PlaygroundContainer extends Component {
 		this.onSelect = this.onSelect.bind(this);
 		this.state = {
 			board: [],
-			player: this.props.active.id,
 		};
 	}
 
@@ -42,18 +41,40 @@ export default class PlaygroundContainer extends Component {
 		this.createBoard(3);
 	}
 
+	componentWillReceiveProps(newProps) {
+		if (newProps.reset) {
+			this.setState({
+				board: [],
+				player: 0,
+			});
+			this.createBoard(3);
+		}
+	}
+
 	onSelect(coords, type, test) {
 		const updatedBoard = test || this.state.board.map(inner => inner.slice());
 
-		const newPlayer = this.state.player === 1 ? 2 : 1;
+		const newPlayer = this.props.active === 1 ? 2 : 1;
+		if (updatedBoard[coords.x][coords.y] !== -1) {
+			return;
+		}
 		updatedBoard[coords.x][coords.y] = newPlayer;
+
+		// add check for full board
+		if (updatedBoard.filter(i =>
+			i.filter(j =>
+				j === -1,
+			),
+		).length < 1) {
+			this.props.onReset();
+		}
 
 		this.setState({ board: updatedBoard, player: newPlayer });
 		if (PlaygroundContainer.isWinner(updatedBoard, newPlayer)) {
-			alert('Congratulations ' + this.props.active.name );
+			this.props.onWin(this.props.active);
+		} else {
+			this.props.onMove();
 		}
-
-		this.props.onMove();
 	}
 
 	createBoard(n) {
@@ -61,7 +82,7 @@ export default class PlaygroundContainer extends Component {
 		for (let i = 0; i < n; i += 1) {
 			boardContructor[i] = [];
 			for (let j = 0; j < n; j += 1) {
-				boardContructor[i][j] = 0;
+				boardContructor[i][j] = -1;
 			}
 		}
 
@@ -72,10 +93,10 @@ export default class PlaygroundContainer extends Component {
 		return (<Playground board={this.state.board} onSelect={this.onSelect} />);
 	}
 }
+
 PlaygroundContainer.propTypes = {
-	active: React.PropTypes.shape({
-			name: React.PropTypes.string,
-			isActive: React.PropTypes.bool,
-	}),
+	active: React.PropTypes.number.isRequired,
 	onMove: React.PropTypes.func.isRequired,
+	onWin: React.PropTypes.func.isRequired,
+	onReset: React.PropTypes.func.isRequired,
 };
