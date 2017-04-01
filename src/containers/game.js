@@ -34,32 +34,49 @@ const styles = StyleSheet.create({
 });
 
 export default class Game extends Component {
+	static generateInitialState(players) {
+		return {
+			players,
+			active: 0,
+			reset: true,
+		};
+	}
+
 	constructor(props) {
 		super(props);
 
 		this.onMove = this.onMove.bind(this);
 		this.onWin = this.onWin.bind(this);
+		this.onReset = this.onReset.bind(this);
 
-		this.state = this.getInitState(this.props.players);
+		this.state = Game.generateInitialState(this.props.players);
 	}
 
 	onMove() {
 		this.setState({
 			reset: false,
 			active: (this.state.active + 1) % 2,
-			players: this.state.players.map(i => ({ ...i, active: !i.active })),
+			players: this.state.players,
 		});
 	}
 
 	onReset() {
-		this.setState({
-			...this.getInitState(this.props.players),
-			reset: true,
-		});
+		Alert.alert(
+            'Fair Game',
+			'no winner',
+			[
+				{ text: 'OK',
+					onPress: () => {
+						this.setState({
+							...Game.generateInitialState(this.props.players),
+						});
+					} },
+			],
+          );
 	}
 
 	onWin(id) {
-		const winner = this.state.players.find(p => p.id === id).name;
+		const winner = this.state.players[id];
 		Alert.alert(
             'Winner',
             winner,
@@ -67,25 +84,11 @@ export default class Game extends Component {
 				{ text: 'OK',
 					onPress: () => {
 						this.setState({
-							...this.getInitState(this.props.players),
+							...Game.generateInitialState(this.props.players),
 						});
 					} },
 			],
           );
-	}
-
-	getInitState(players) {
-		const playersState = players.map((player, index) => ({
-			id: index,
-			name: player,
-			active: index === 1,
-		}));
-		return {
-			players: playersState,
-			active: 0,
-			winner: 0,
-			reset: true,
-		};
 	}
 
 	render() {
@@ -103,7 +106,7 @@ export default class Game extends Component {
 							<Player name={player} active={this.state.active === index} />
 						))
 					}
-			</View>
+					</View>
 				</View>
 				<View style={styles.PlaygroundContainer}>
 					<PlaygroundContainer reset={this.state.reset} onReset={this.onReset} active={this.state.active} onMove={this.onMove} onWin={this.onWin} />

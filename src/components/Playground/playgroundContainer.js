@@ -60,17 +60,11 @@ export default class PlaygroundContainer extends Component {
 		}
 		updatedBoard[coords.x][coords.y] = newPlayer;
 
-		// add check for full board
-		if (updatedBoard.filter(i =>
-			i.filter(j =>
-				j === -1,
-			),
-		).length < 1) {
-			this.props.onReset();
-		}
-
 		this.setState({ board: updatedBoard, player: newPlayer });
-		if (PlaygroundContainer.isWinner(updatedBoard, newPlayer)) {
+
+		if ([].concat(...updatedBoard).filter(i => i === -1).length < 1) {
+			this.props.onReset();
+		} else if (PlaygroundContainer.isWinner(updatedBoard, newPlayer)) {
 			this.props.onWin(this.props.active);
 		} else {
 			this.props.onMove();

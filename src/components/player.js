@@ -2,13 +2,8 @@ import React, { Component } from 'react';
 import {
 	View,
 	StyleSheet,
-	TouchableOpacity,
 	Text,
 } from 'react-native';
-import Svg, {
-		Circle,
-		Rect,
-} from 'react-native-svg';
 
 const styles = StyleSheet.create({
 	MainContainer: {
@@ -26,8 +21,8 @@ const styles = StyleSheet.create({
 		fontSize: 80,
 	},
 });
-export default class Player extends Component {
 
+export default class Player extends Component {
 	render() {
 		let { name } = this.props;
 		const { active } = this.props;
