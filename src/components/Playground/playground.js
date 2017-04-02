@@ -6,7 +6,8 @@ import {
 } from 'react-native';
 import Svg, {
 		Circle,
-		Rect,
+		Line,
+		G,
 } from 'react-native-svg';
 
 const styles = StyleSheet.create({
@@ -53,15 +54,24 @@ export default class Playground extends Component {
 			);
 		} else if (type === 2) {
 			return (
-					<Rect
-						x="15"
-						y="15"
-						width="70"
-						height="70"
-						stroke="red"
-						strokeWidth="1"
-						fillOpacity="0"
-					/>
+					<G>
+						<Line
+							x1="25"
+							y1="25"
+							x2="75"
+							y2="75"
+							stroke="red"
+							strokeWidth="1"
+						/>
+						<Line
+							x1="25"
+							y1="75"
+							x2="75"
+							y2="25"
+							stroke="red"
+							strokeWidth="1"
+						/>
+					</G>
 			);
 		}
 		return null;
