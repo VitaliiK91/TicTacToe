@@ -27,15 +27,14 @@ export default class Player extends Component {
 		let { name } = this.props;
 		const { active } = this.props;
 
-		if (!name) {
-			name = 'player 1';
-		}
-
 		const border = active ? 1 : 0;
 		return (
 			<View style={{ borderWidth: border }}>
 				<Text>
 				{name}
+				</Text>
+				<Text>
+					SCORE: {this.props.score}
 				</Text>
 			</View>
 		);
@@ -44,4 +43,6 @@ export default class Player extends Component {
 Player.propTypes = {
 	name: React.PropTypes.string.isRequired,
 	active: React.PropTypes.bool,
+	score: React.PropTypes.number.isRequired,
 };
+

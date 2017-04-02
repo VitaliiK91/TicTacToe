@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 export default class Game extends Component {
 	static generateInitialState(players) {
 		return {
-			players,
+			wins: [0, 0],
 			active: 0,
 			reset: true,
 		};
@@ -56,7 +56,6 @@ export default class Game extends Component {
 		this.setState({
 			reset: false,
 			active: (this.state.active + 1) % 2,
-			players: this.state.players,
 		});
 	}
 
@@ -67,16 +66,18 @@ export default class Game extends Component {
 			[
 				{ text: 'OK',
 					onPress: () => {
-						this.setState({
-							...Game.generateInitialState(this.props.players),
-						});
+						this.restart();
 					} },
 			],
           );
 	}
 
 	onWin(id) {
-		const winner = this.state.players[id];
+		const winner = this.props.players[id];
+
+		const wins = this.state.wins.slice();
+		wins[id] += 1;
+
 		Alert.alert(
             'Winner',
             winner,
@@ -84,11 +85,16 @@ export default class Game extends Component {
 				{ text: 'OK',
 					onPress: () => {
 						this.setState({
-							...Game.generateInitialState(this.props.players),
+							wins,
 						});
+						this.restart();
 					} },
 			],
           );
+	}
+
+	restart() {
+		this.setState({ active: 0, reset: true });
 	}
 
 	render() {
@@ -103,7 +109,12 @@ export default class Game extends Component {
 					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
 					{
 						this.props.players.map((player, index) => (
-							<Player name={player} active={this.state.active === index} />
+							<Player
+								key={`id_${player}`}
+								name={player}
+								score={this.state.wins[index]}
+								active={this.state.active === index}
+							/>
 						))
 					}
 					</View>
