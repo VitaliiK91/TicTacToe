@@ -8,7 +8,7 @@ export default class PlaygroundContainer extends Component {
 		const rowScore = [0, 0, 0];
 		const columnScore = [0, 0, 0];
 		const diagScore = [0, 0];
-		const boardLength = board.length;
+
 		for (let i = 0; i < board.length; i += 1) {
 			for (let j = 0; j < board.length; j += 1) {
 				if (board[i][j] === player) {
@@ -25,7 +25,23 @@ export default class PlaygroundContainer extends Component {
 				}
 			}
 		}
-		return columnScore.includes(boardLength) || rowScore.includes(boardLength) || diagScore.includes(boardLength);
+		if (columnScore.includes(board.length)) {
+			return {
+				type: 'column',
+				line: columnScore.findIndex(i => i === board.length),
+			};
+		} else if (rowScore.includes(board.length)) {
+			return {
+				type: 'row',
+				line: rowScore.findIndex(i => i === board.length),
+			};
+		} else if (diagScore.includes(board.length)) {
+			return {
+				type: 'diag',
+				line: diagScore.findIndex(i => i === board.length),
+			};
+		}
+		return null;
 	}
 
 	constructor(props) {
@@ -46,6 +62,7 @@ export default class PlaygroundContainer extends Component {
 			this.setState({
 				board: [],
 				player: 0,
+				winner: null,
 			});
 			this.createBoard(3);
 		}
@@ -65,6 +82,8 @@ export default class PlaygroundContainer extends Component {
 		if ([].concat(...updatedBoard).filter(i => i === -1).length < 1) {
 			this.props.onReset();
 		} else if (PlaygroundContainer.isWinner(updatedBoard, newPlayer)) {
+			const winLine = PlaygroundContainer.isWinner(updatedBoard, newPlayer);
+			this.setState({ winner: winLine });
 			this.props.onWin(this.props.active);
 		} else {
 			this.props.onMove();
@@ -84,7 +103,7 @@ export default class PlaygroundContainer extends Component {
 	}
 
 	render() {
-		return (<Playground board={this.state.board} onSelect={this.onSelect} />);
+		return (<Playground board={this.state.board} onSelect={this.onSelect} winner={this.state.winner} />);
 	}
 }
 

@@ -18,30 +18,22 @@ const styles = StyleSheet.create({
 	},
 	HeaderContainer: {
 		flex: 1,
-		borderWidth: 1,
-		borderColor: 'red',
 		alignItems: 'center',
 		justifyContent: 'space-around',
 	},
 	PlayersContainer: {
 		flex: 2,
 		borderWidth: 1,
-		borderColor: 'blue',
+		borderColor: 'red',
 	},
 	PlaygroundContainer: {
 		flex: 8,
+		borderWidth: 1,
+		borderColor: 'red',
 	},
 });
 
 export default class Game extends Component {
-	static generateInitialState(players) {
-		return {
-			wins: [0, 0],
-			active: 0,
-			reset: true,
-		};
-	}
-
 	constructor(props) {
 		super(props);
 
@@ -49,7 +41,11 @@ export default class Game extends Component {
 		this.onWin = this.onWin.bind(this);
 		this.onReset = this.onReset.bind(this);
 
-		this.state = Game.generateInitialState(this.props.players);
+		this.state = {
+			wins: [0, 0],
+			active: 0,
+			reset: true,
+		};
 	}
 
 	onMove() {

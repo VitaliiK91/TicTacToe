@@ -77,8 +77,61 @@ export default class Playground extends Component {
 		return null;
 	}
 
+	static winCell(type, line, i, j, center) {
+		if (type === 'row') {
+			if (j === line) {
+				return (
+					<Line
+						x1="50"
+						y1="0"
+						x2="50"
+						y2="100"
+						stroke="green"
+						strokeWidth="3"
+					/>
+				);
+			}
+		} else if (type === 'column') {
+			if (i === line) {
+				return (
+					<Line
+						x1="0"
+						y1="50"
+						x2="100"
+						y2="50"
+						stroke="green"
+						strokeWidth="3"
+					/>
+				);
+			}
+		} else if (line === 0 && i === j) {
+			return (
+				<Line
+					x1="0"
+					y1="0"
+					x2="100"
+					y2="100"
+					stroke="green"
+					strokeWidth="3"
+				/>
+			);
+		} else if (line === 1 && (i + j) === center) {
+			return (
+				<Line
+					x1="0"
+					y1="100"
+					x2="100"
+					y2="0"
+					stroke="green"
+					strokeWidth="3"
+				/>
+			);
+		}
+		return null;
+	}
+
 	render() {
-		const { board, onSelect } = this.props;
+		const { board, onSelect, winner } = this.props;
 		if (!board || !onSelect) {
 			return null;
 		}
@@ -104,6 +157,7 @@ export default class Playground extends Component {
 								width="100"
 							>
 							{Playground.boardFigure(j)}
+							{winner && Playground.winCell(winner.type, winner.line, indexI, indexJ, boardLength)}
 							</Svg>
 						</TouchableOpacity>
 					))}
@@ -121,4 +175,8 @@ Playground.propTypes = {
 		),
 	).isRequired,
 	onSelect: React.PropTypes.func.isRequired,
+	winner: React.PropTypes.shape({
+		type: React.PropTypes.string,
+		line: React.PropTypes.number,
+	}),
 };
