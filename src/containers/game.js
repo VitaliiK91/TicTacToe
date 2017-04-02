@@ -23,13 +23,10 @@ const styles = StyleSheet.create({
 	},
 	PlayersContainer: {
 		flex: 2,
-		borderWidth: 1,
-		borderColor: 'red',
+		flexDirection: 'row',
 	},
 	PlaygroundContainer: {
 		flex: 8,
-		borderWidth: 1,
-		borderColor: 'red',
 	},
 });
 
@@ -102,7 +99,6 @@ export default class Game extends Component {
 					</Text>
 				</View>
 				<View style={styles.PlayersContainer}>
-					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
 					{
 						this.props.players.map((player, index) => (
 							<Player
@@ -114,7 +110,6 @@ export default class Game extends Component {
 						))
 					}
 					</View>
-				</View>
 				<View style={styles.PlaygroundContainer}>
 					<PlaygroundContainer reset={this.state.reset} onReset={this.onReset} active={this.state.active} onMove={this.onMove} onWin={this.onWin} />
 				</View>

@@ -24,18 +24,19 @@ const styles = StyleSheet.create({
 
 export default class Player extends Component {
 	render() {
-		let { name } = this.props;
+		const { name } = this.props;
 		const { active } = this.props;
 
-		const border = active ? 1 : 0;
 		return (
-			<View style={{ borderWidth: border }}>
-				<Text>
-				{name}
-				</Text>
-				<Text>
-					SCORE: {this.props.score}
-				</Text>
+			<View style={{ flex: 1, flexDirection: 'row' }}>
+				<View style={{ flex: 1, backgroundColor: active ? 'red' : 'white', alignItems: 'center', justifyContent:'space-around'}}>
+					<Text style={{ fontSize: 20 }}>
+					{name}
+					</Text>
+					<Text style={{ fontSize: 50 }}>
+						{this.props.score}
+					</Text>
+				</View>
 			</View>
 		);
 	}
