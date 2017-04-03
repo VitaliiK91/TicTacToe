@@ -26,14 +26,15 @@ export default class Player extends Component {
 	render() {
 		const { name } = this.props;
 		const { active } = this.props;
+		const color = active ? 'white' : 'black';
 
 		return (
 			<View style={{ flex: 1, flexDirection: 'row' }}>
 				<View style={{ flex: 1, backgroundColor: active ? 'red' : 'white', alignItems: 'center', justifyContent:'space-around'}}>
-					<Text style={{ fontSize: 20 }}>
+					<Text style={{ fontSize: 20, color }}>
 					{name}
 					</Text>
-					<Text style={{ fontSize: 50 }}>
+					<Text style={{ fontSize: 50, color }}>
 						{this.props.score}
 					</Text>
 				</View>

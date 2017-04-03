@@ -8,6 +8,7 @@ import {
 
 import PlaygroundContainer from '../components/Playground';
 import Player from '../components/player';
+import Header from '../components/header';
 
 const styles = StyleSheet.create({
 	MainContainer: {
@@ -94,9 +95,7 @@ export default class Game extends Component {
 		return (
 			<View style={styles.MainContainer}>
 				<View style={styles.HeaderContainer}>
-					<Text>
-						TicTacToe
-					</Text>
+					<Header />
 				</View>
 				<View style={styles.PlayersContainer}>
 					{
