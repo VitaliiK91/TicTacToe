@@ -1,20 +1,18 @@
-import React from 'react';
-import { Text } from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import Game from './game';
+import registerScenes from './scenes';
 
-// screen related book keeping
-Navigation.registerComponent('ticTacToe.game', () => Game);
-Navigation.registerComponent('ticTacToe.settings', () => (() => <Text>Test</Text>));
+// register all scenes
+registerScenes();
 
 const tabs = [{
 	label: 'Game',
-	screen: 'ticTacToe.game',
+	screen: 'game',
     // icon: require('../img/list.png'),
 	title: 'Tic Tac Toe',
+	passProps: { players: ['wowo', 'dodo'] },
 }, {
 	label: 'Settings',
-	screen: 'ticTacToe.settings',
+	screen: 'settings',
 	// icon: require('../img/swap.png'),
 	title: 'Settings',
 }];

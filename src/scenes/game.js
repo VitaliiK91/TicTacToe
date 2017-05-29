@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import {
 	View,
-	Text,
 	Alert,
 	StyleSheet,
 } from 'react-native';
 
-import PlaygroundContainer from '../components/Playground';
+import Playground from '../components/Playground';
 import Player from '../components/player';
-import Header from '../components/header';
 
 const styles = StyleSheet.create({
 	MainContainer: {
@@ -55,7 +53,7 @@ export default class Game extends Component {
 
 	onReset() {
 		Alert.alert(
-            'Fair Game',
+            'Draw',
 			'no winner',
 			[
 				{ text: 'OK',
@@ -107,7 +105,13 @@ export default class Game extends Component {
 					}
 					</View>
 				<View style={styles.PlaygroundContainer}>
-					<PlaygroundContainer reset={this.state.reset} onReset={this.onReset} active={this.state.active} onMove={this.onMove} onWin={this.onWin} />
+					<Playground
+						reset={this.state.reset}
+						onReset={this.onReset}
+						active={this.state.active}
+						onMove={this.onMove}
+						onWin={this.onWin}
+					/>
 				</View>
 			</View>
 		);

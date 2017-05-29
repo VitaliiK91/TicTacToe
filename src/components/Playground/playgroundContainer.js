@@ -4,7 +4,7 @@ import Playground from './playground';
 
 export default class PlaygroundContainer extends Component {
 
-	static isWinner(board, player) {
+	static getWinner(board, player) {
 		const rowScore = [0, 0, 0];
 		const columnScore = [0, 0, 0];
 		const diagScore = [0, 0];
@@ -44,6 +44,10 @@ export default class PlaygroundContainer extends Component {
 		return null;
 	}
 
+	static isDraw(board) {
+		return [].concat(...board).filter(i => i === -1).length < 1;
+	}
+
 	constructor(props) {
 		super(props);
 		this.createBoard = this.createBoard.bind(this);
@@ -68,8 +72,8 @@ export default class PlaygroundContainer extends Component {
 		}
 	}
 
-	onSelect(coords, type, test) {
-		const updatedBoard = test || this.state.board.map(inner => inner.slice());
+	onSelect(coords) {
+		const updatedBoard = this.state.board.map(inner => inner.slice());
 
 		const newPlayer = this.props.active === 1 ? 2 : 1;
 		if (updatedBoard[coords.x][coords.y] !== -1) {
@@ -79,12 +83,13 @@ export default class PlaygroundContainer extends Component {
 
 		this.setState({ board: updatedBoard, player: newPlayer });
 
-		if ([].concat(...updatedBoard).filter(i => i === -1).length < 1) {
-			this.props.onReset();
-		} else if (PlaygroundContainer.isWinner(updatedBoard, newPlayer)) {
-			const winLine = PlaygroundContainer.isWinner(updatedBoard, newPlayer);
-			this.setState({ winner: winLine });
+		const winner = PlaygroundContainer.getWinner(updatedBoard, newPlayer);
+
+		if (winner) { // check if we have a winner
+			this.setState({ winner });
 			this.props.onWin(this.props.active);
+		} else if (PlaygroundContainer.isDraw(updatedBoard)) { // check if draw
+			this.props.onReset();
 		} else {
 			this.props.onMove();
 		}

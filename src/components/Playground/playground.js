@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
 		fontSize: 80,
 	},
 });
+
 export default class Playground extends Component {
 
 	static cellStyle(i, j, boardLength) {
@@ -40,7 +41,7 @@ export default class Playground extends Component {
 			borderRightWidth,
 		};
 	}
-	static boardFigure(type) {
+	static getShape(type) {
 		if (type === 1) {
 			return (
 					<Circle
@@ -150,13 +151,13 @@ export default class Playground extends Component {
 								styles.Cell,
 								Playground.cellStyle(indexI, indexJ, boardLength),
 							]}
-							onPress={() => { this.props.onSelect({ x: indexI, y: indexJ }, j); }}
+							onPress={() => { this.props.onSelect({ x: indexI, y: indexJ }); }}
 						>
 							<Svg
 								height="100"
 								width="100"
 							>
-							{Playground.boardFigure(j)}
+							{Playground.getShape(j)}
 							{winner && Playground.winCell(winner.type, winner.line, indexI, indexJ, boardLength)}
 							</Svg>
 						</TouchableOpacity>
@@ -168,6 +169,7 @@ export default class Playground extends Component {
 		);
 	}
 }
+
 Playground.propTypes = {
 	board: React.PropTypes.arrayOf(
 		React.PropTypes.arrayOf(
@@ -180,3 +182,8 @@ Playground.propTypes = {
 		line: React.PropTypes.number,
 	}),
 };
+
+Playground.defaultProps = {
+	winner: null,
+};
+
