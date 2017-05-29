@@ -94,9 +94,6 @@ export default class Game extends Component {
 	render() {
 		return (
 			<View style={styles.MainContainer}>
-				<View style={styles.HeaderContainer}>
-					<Header />
-				</View>
 				<View style={styles.PlayersContainer}>
 					{
 						this.props.players.map((player, index) => (
